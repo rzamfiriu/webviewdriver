@@ -5,10 +5,17 @@
     <SupportedOSPlatformVersion Condition="'$(TargetPlatformIdentifier)' == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="'$(TargetPlatformIdentifier)' == 'ios'">15.0</SupportedOSPlatformVersion>
     <RootNamespace>WebViewDriver.Host</RootNamespace>
+    <Title>WebViewDriver Host</Title>
     <Description>Opt-in loopback JavaScript-eval endpoint that lets WebViewDriver.Selenium automate a WKWebView (or any embedded webview) in your app. Inert unless WEBVIEWDRIVER_PORT and WEBVIEWDRIVER_TOKEN are set. Never ship this active in Release builds.</Description>
     <PackageTags>webdriver;selenium;wkwebview;maui;maccatalyst;ios;testing;automation</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>Initial 0.3 release.</PackageReleaseNotes>
     <IsAotCompatible Condition="'$(TargetFramework)' == 'net10.0'">true</IsAotCompatible>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="WebViewDriver.Tests" />

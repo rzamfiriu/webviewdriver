@@ -3,8 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>WebViewDriver.Selenium</RootNamespace>
+    <Title>WebViewDriver for Selenium</Title>
     <Description>Test-side Selenium IWebDriver for apps that embed WKWebView and host the WebViewDriver.Host eval endpoint. Maps standard WebDriver commands (find, click, sendKeys, executeScript, waits) onto the in-app JavaScript bridge, so existing Selenium page objects work on Mac Catalyst, macOS and iOS.</Description>
     <PackageTags>webdriver;selenium;wkwebview;maui;maccatalyst;ios;testing;automation</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>Initial 0.3 release.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -20,6 +23,10 @@
 
   <ItemGroup>
     <PackageReference Include="Selenium.WebDriver" Version="$(SeleniumVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 
   <ItemGroup>

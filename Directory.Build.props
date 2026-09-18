@@ -4,8 +4,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-    <Authors>WebViewDriver contributors</Authors>
+    <Authors>Rares Zamfiriu</Authors>
+    <Copyright>Copyright © 2026 Rares Zamfiriu</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/rzamfiriu/webviewdriver</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/rzamfiriu/webviewdriver.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <VersionPrefix>0.3.0</VersionPrefix>
   </PropertyGroup>
@@ -15,10 +19,6 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/" Visible="false" />
-  </ItemGroup>
 </Project>
