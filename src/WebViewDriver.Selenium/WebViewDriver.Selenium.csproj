@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>WebViewDriver.Selenium</RootNamespace>
+    <Description>Test-side Selenium IWebDriver for apps that embed WKWebView and host the WebViewDriver.Host eval endpoint. Maps standard WebDriver commands (find, click, sendKeys, executeScript, waits) onto the in-app JavaScript bridge, so existing Selenium page objects work on Mac Catalyst, macOS and iOS.</Description>
+    <PackageTags>webdriver;selenium;wkwebview;maui;maccatalyst;ios;testing;automation</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--
+      Declared floor (CR2): 4.30.0 is the oldest Selenium 4.x this source compiles
+      against cleanly (4.26-4.27 lack the immutable Response API; 4.29 has nullability
+      annotation churn). The package is compiled against the floor; the CI matrix
+      additionally tests a midpoint and the latest release.
+      Override for the matrix: dotnet test -p:SeleniumVersion=4.49.0
+    -->
+    <SeleniumVersion Condition="'$(SeleniumVersion)' == ''">4.30.0</SeleniumVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Selenium.WebDriver" Version="$(SeleniumVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="bridge.js" LogicalName="WebViewDriver.Selenium.bridge.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="WebViewDriver.Tests" />
+    <InternalsVisibleTo Include="WebViewDriver.IntegrationTests" />
+    <InternalsVisibleTo Include="WebViewDriver.AppiumMac.Tests" />
+  </ItemGroup>
+
+</Project>

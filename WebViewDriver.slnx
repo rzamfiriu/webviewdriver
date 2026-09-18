@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/WebViewDriver.Host/WebViewDriver.Host.csproj" />
+    <Project Path="src/WebViewDriver.Selenium.AppiumMac/WebViewDriver.Selenium.AppiumMac.csproj" />
+    <Project Path="src/WebViewDriver.Selenium/WebViewDriver.Selenium.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WebViewDriver.AppiumMac.Tests/WebViewDriver.AppiumMac.Tests.csproj" />
+    <Project Path="tests/WebViewDriver.IntegrationTests/WebViewDriver.IntegrationTests.csproj" />
+    <Project Path="tests/WebViewDriver.Tests/WebViewDriver.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/SmokeTest/SmokeTest.csproj" />
+  </Folder>
+</Solution>

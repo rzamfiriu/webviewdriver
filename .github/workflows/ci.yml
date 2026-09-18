@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        # CR2: declared floor, midpoint, latest. Bump 'latest' with new Selenium releases.
+        selenium: ["4.30.0", "4.40.0", "4.49.0"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Unit tests (Selenium ${{ matrix.selenium }})
+        run: dotnet test tests/WebViewDriver.Tests -p:SeleniumVersion=${{ matrix.selenium }} --logger "console;verbosity=normal"
+      - name: Install jsdom harness
+        run: npm ci --no-audit --no-fund
+        working-directory: tests/WebViewDriver.IntegrationTests/jshost
+      - name: Integration tests (jsdom real-DOM end-to-end, Selenium ${{ matrix.selenium }})
+        run: dotnet test tests/WebViewDriver.IntegrationTests -p:SeleniumVersion=${{ matrix.selenium }} --logger "console;verbosity=normal"
+      - name: AppiumMac backend tests (own Selenium floor via Appium)
+        if: matrix.selenium == '4.49.0'
+        run: dotnet test tests/WebViewDriver.AppiumMac.Tests --logger "console;verbosity=normal"
+
+  sample:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Install MAUI workload
+        run: dotnet workload install maui
+      - name: Build Mac Catalyst sample
+        run: dotnet build samples/WebViewDriver.Sample -f net10.0-maccatalyst -p:ValidateXcodeVersion=false
+      - name: Smoke test against real WKWebView
+        run: |
+          export WEBVIEWDRIVER_PORT=17321
+          export WEBVIEWDRIVER_TOKEN=$(uuidgen)
+          APP_BIN=$(find samples/WebViewDriver.Sample/bin/Debug/net10.0-maccatalyst -path "*.app/Contents/MacOS/WebViewDriver.Sample" | head -1)
+          "$APP_BIN" > /tmp/sample-app.log 2>&1 &
+          APP_PID=$!
+          sleep 5
+          dotnet run --project tools/SmokeTest -- 17321 "$WEBVIEWDRIVER_TOKEN"
+          RC=$?
+          kill $APP_PID || true
+          exit $RC

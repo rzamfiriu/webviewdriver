@@ -1,0 +1,8 @@
+{
+  "name": "webviewdriver-jsdom-host",
+  "private": true,
+  "description": "Test harness: pretends to be a WKWebView by evaluating scripts in a jsdom document over stdio.",
+  "dependencies": {
+    "jsdom": "24.1.3"
+  }
+}

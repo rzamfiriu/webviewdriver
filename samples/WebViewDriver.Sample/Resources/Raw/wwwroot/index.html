@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>WebViewDriver Fixture</title>
+</head>
+<body>
+  <h1 id="heading">WebViewDriver fixture</h1>
+  <p class="notice">First notice</p>
+  <p class="notice">Second notice</p>
+  <a href="#about" id="about-link">About this app</a>
+  <a href="page2.html" id="page2-link">Second page</a>
+
+  <form id="form">
+    <input type="text" id="name-input" name="username" placeholder="Name">
+    <input type="checkbox" id="agree" name="agree">
+    <input type="text" id="disabled-input" disabled value="locked">
+    <select id="color">
+      <option value="red">Red</option>
+      <option value="green">Green</option>
+    </select>
+    <button type="button" id="save" data-test-id="save">Save</button>
+  </form>
+
+  <div id="click-count">0</div>
+  <div id="typed-echo"></div>
+  <div id="change-log"></div>
+  <div id="hidden" style="display:none">secret</div>
+  <button type="button" id="hidden-btn" style="display:none">Hidden button</button>
+  <ul id="list"><li>alpha</li><li>beta</li></ul>
+  <div id="removable">removable</div>
+  <button type="button" id="remove-btn">Remove</button>
+  <div id="container"><span class="inner">inner text</span></div>
+
+  <div id="shadow-host"></div>
+
+  <!-- Actions fixtures -->
+  <div id="menu">
+    <button type="button" id="menu-btn">Menu</button>
+    <div id="menu-panel" style="display:none"><a id="menu-item">Item One</a></div>
+  </div>
+  <div id="drag-area" style="position:relative; width:300px; height:120px; border:1px solid #999;">
+    <div id="drag-box" style="position:absolute; left:10px; top:10px; width:40px; height:40px; background:#512BD4;"></div>
+  </div>
+  <div id="drag-status">idle</div>
+  <button type="button" id="shift-target">Shift target</button>
+  <div id="mod-log"></div>
+  <button type="button" id="dbl-target">Double-click me</button>
+  <div id="dbl-count">0</div>
+  <div id="wheel-box" style="width:200px; height:80px; overflow:auto;"><div style="height:600px;">tall content</div></div>
+  <div id="wheel-log"></div>
+
+  <!-- Overlay scenario: layout-dependent, asserted only where layout exists (real WKWebView). -->
+  <button type="button" id="covered-btn" style="position:fixed; left:40px; bottom:40px; width:120px; height:32px;">Covered</button>
+  <div id="overlay" style="position:fixed; left:0; bottom:0; width:400px; height:120px; background:rgba(200,200,200,.8); z-index:10;">overlay</div>
+
+  <script>
+    window.appReady = false;
+    var clicks = 0;
+    document.getElementById('save').addEventListener('click', function () {
+      clicks++;
+      document.getElementById('click-count').textContent = String(clicks);
+      window.appReady = true;
+    });
+    // Mirrors a framework-controlled input: only updates when real input events fire.
+    document.getElementById('name-input').addEventListener('input', function (event) {
+      document.getElementById('typed-echo').textContent = event.target.value;
+    });
+    document.getElementById('name-input').addEventListener('change', function () {
+      document.getElementById('change-log').textContent = 'changed';
+    });
+    document.getElementById('color').addEventListener('change', function (event) {
+      document.getElementById('change-log').textContent = 'color:' + event.target.value;
+    });
+    document.getElementById('form').addEventListener('submit', function (event) {
+      event.preventDefault();
+      document.getElementById('change-log').textContent = 'submitted';
+    });
+    document.getElementById('remove-btn').addEventListener('click', function () {
+      var removable = document.getElementById('removable');
+      if (removable) { removable.parentNode.removeChild(removable); }
+    });
+
+    // Open shadow root with content.
+    var shadowRoot = document.getElementById('shadow-host').attachShadow({ mode: 'open' });
+    shadowRoot.innerHTML = '<button id="shadow-btn">Shadow button</button><span class="shadow-label">shadow text</span>';
+    shadowRoot.getElementById('shadow-btn').addEventListener('click', function () {
+      shadowRoot.querySelector('.shadow-label').textContent = 'shadow clicked';
+    });
+
+    // Same-origin iframe (about:blank + document.write loads synchronously
+    // everywhere, including jsdom).
+    var iframe = document.createElement('iframe');
+    iframe.id = 'frame1';
+    document.body.appendChild(iframe);
+    var frameDoc = iframe.contentDocument;
+    frameDoc.open();
+    frameDoc.write('<p id="frame-text">inside frame</p><button id="frame-btn">Frame button</button>');
+    frameDoc.close();
+    frameDoc.getElementById('frame-btn').addEventListener('click', function () {
+      frameDoc.getElementById('frame-text').textContent = 'frame clicked';
+    });
+
+    // Actions: JS hover menu.
+    var menuBtn = document.getElementById('menu-btn');
+    menuBtn.addEventListener('mouseover', function () {
+      document.getElementById('menu-panel').style.display = 'block';
+    });
+    menuBtn.addEventListener('mouseout', function () {
+      document.getElementById('menu-panel').style.display = 'none';
+    });
+
+    // Actions: pointer-event based drag (Konva-style pattern).
+    var dragBox = document.getElementById('drag-box');
+    var dragStatus = document.getElementById('drag-status');
+    var dragging = false;
+    dragBox.addEventListener('pointerdown', function () {
+      dragging = true;
+      dragStatus.textContent = 'dragging';
+    });
+    document.addEventListener('pointermove', function (event) {
+      if (!dragging) { return; }
+      var area = document.getElementById('drag-area').getBoundingClientRect();
+      dragBox.style.left = Math.max(0, event.clientX - area.left - 20) + 'px';
+      dragBox.style.top = Math.max(0, event.clientY - area.top - 20) + 'px';
+    });
+    document.addEventListener('pointerup', function () {
+      if (dragging) {
+        dragging = false;
+        dragStatus.textContent = 'dropped';
+      }
+    });
+
+    // Actions: modifier and double clicks, wheel.
+    document.getElementById('shift-target').addEventListener('click', function (event) {
+      document.getElementById('mod-log').textContent = 'shift:' + event.shiftKey;
+    });
+    var dblCount = 0;
+    document.getElementById('dbl-target').addEventListener('dblclick', function () {
+      dblCount++;
+      document.getElementById('dbl-count').textContent = String(dblCount);
+    });
+    document.getElementById('wheel-box').addEventListener('wheel', function (event) {
+      document.getElementById('wheel-log').textContent = 'wheel:' + (event.deltaY > 0 ? 'down' : 'up');
+    });
+
+    setTimeout(function () { window.delayedFlag = true; }, 250);
+  </script>
+</body>
+</html>

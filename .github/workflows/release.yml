@@ -1,0 +1,25 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  publish:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Install MAUI workload (Host packs maccatalyst/ios TFMs)
+        run: dotnet workload install maui
+      - name: Pack
+        run: |
+          dotnet pack src/WebViewDriver.Host -c Release -o artifacts
+          dotnet pack src/WebViewDriver.Selenium -c Release -o artifacts
+          dotnet pack src/WebViewDriver.Selenium.AppiumMac -c Release -o artifacts
+      - name: Push to nuget.org
+        run: dotnet nuget push "artifacts/*.nupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}

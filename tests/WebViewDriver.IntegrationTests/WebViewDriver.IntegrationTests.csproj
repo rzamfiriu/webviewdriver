@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SeleniumVersion Condition="'$(SeleniumVersion)' == ''">4.30.0</SeleniumVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="Selenium.Support" Version="$(SeleniumVersion)" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/WebViewDriver.Host/WebViewDriver.Host.csproj" />
+    <ProjectReference Include="../../src/WebViewDriver.Selenium/WebViewDriver.Selenium.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="JsHostDirectory" Value="$(MSBuildProjectDirectory)/jshost" />
+  </ItemGroup>
+
+</Project>

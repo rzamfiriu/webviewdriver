@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SeleniumVersion Condition="'$(SeleniumVersion)' == ''">4.30.0</SeleniumVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/WebViewDriver.Selenium/WebViewDriver.Selenium.csproj" />
+    <PackageReference Include="Selenium.Support" Version="$(SeleniumVersion)" />
+  </ItemGroup>
+</Project>
