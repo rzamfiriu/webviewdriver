@@ -5,6 +5,7 @@ It is intended for MAUI `WebView`, `HybridWebView`, `BlazorWebView`, and other
 Mac Catalyst or iOS apps that own their webview.
 
 The current release is **0.3.0**.
+The packages target .NET 10.
 
 ## Packages
 

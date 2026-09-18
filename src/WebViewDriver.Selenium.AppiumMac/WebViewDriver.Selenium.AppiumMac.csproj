@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>WebViewDriver.Selenium.AppiumMac</RootNamespace>
     <Description>Trusted-input Actions backend for WebViewDriver: routes W3C Actions through an Appium mac2 session as real OS input (CSS :hover, HTML5 drag-and-drop, canvas drags) at screen coordinates computed from the webview's accessibility frame. Optional companion to WebViewDriver.Selenium.</Description>
     <PackageTags>webdriver;selenium;appium;mac2;wkwebview;maui;maccatalyst;testing;automation</PackageTags>

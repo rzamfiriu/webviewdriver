@@ -22,15 +22,15 @@ jobs:
         with:
           node-version: 20
       - name: Unit tests (Selenium ${{ matrix.selenium }})
-        run: dotnet test tests/WebViewDriver.Tests -p:SeleniumVersion=${{ matrix.selenium }} --logger "console;verbosity=normal"
+        run: dotnet test tests/WebViewDriver.Tests --framework net10.0 -p:TargetFrameworks=net10.0 -p:SeleniumVersion=${{ matrix.selenium }} --logger "console;verbosity=normal"
       - name: Install jsdom harness
         run: npm ci --no-audit --no-fund
         working-directory: tests/WebViewDriver.IntegrationTests/jshost
       - name: Integration tests (jsdom real-DOM end-to-end, Selenium ${{ matrix.selenium }})
-        run: dotnet test tests/WebViewDriver.IntegrationTests -p:SeleniumVersion=${{ matrix.selenium }} --logger "console;verbosity=normal"
+        run: dotnet test tests/WebViewDriver.IntegrationTests --framework net10.0 -p:TargetFrameworks=net10.0 -p:SeleniumVersion=${{ matrix.selenium }} --logger "console;verbosity=normal"
       - name: AppiumMac backend tests (own Selenium floor via Appium)
         if: matrix.selenium == '4.49.0'
-        run: dotnet test tests/WebViewDriver.AppiumMac.Tests --logger "console;verbosity=normal"
+        run: dotnet test tests/WebViewDriver.AppiumMac.Tests --framework net10.0 -p:TargetFrameworks=net10.0 --logger "console;verbosity=normal"
 
   sample:
     runs-on: macos-15

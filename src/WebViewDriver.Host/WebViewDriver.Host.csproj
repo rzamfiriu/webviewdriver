@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net10.0-maccatalyst;net10.0-ios</TargetFrameworks>
+    <TargetFrameworks>net10.0;net10.0-maccatalyst;net10.0-ios</TargetFrameworks>
     <SupportedOSPlatformVersion Condition="'$(TargetPlatformIdentifier)' == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="'$(TargetPlatformIdentifier)' == 'ios'">15.0</SupportedOSPlatformVersion>
     <RootNamespace>WebViewDriver.Host</RootNamespace>
     <Description>Opt-in loopback JavaScript-eval endpoint that lets WebViewDriver.Selenium automate a WKWebView (or any embedded webview) in your app. Inert unless WEBVIEWDRIVER_PORT and WEBVIEWDRIVER_TOKEN are set. Never ship this active in Release builds.</Description>
     <PackageTags>webdriver;selenium;wkwebview;maui;maccatalyst;ios;testing;automation</PackageTags>
-    <IsAotCompatible Condition="'$(TargetFramework)' == 'net8.0'">true</IsAotCompatible>
+    <IsAotCompatible Condition="'$(TargetFramework)' == 'net10.0'">true</IsAotCompatible>
   </PropertyGroup>
 
   <ItemGroup>
