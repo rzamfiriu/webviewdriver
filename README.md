@@ -4,6 +4,10 @@ WebViewDriver lets Selenium tests control a `WKWebView` embedded in a .NET app.
 It is intended for MAUI `WebView`, `HybridWebView`, `BlazorWebView`, and other
 Mac Catalyst or iOS apps that own their webview.
 
+[![WebViewDriver.Host on NuGet](https://img.shields.io/nuget/v/WebViewDriver.Host?label=WebViewDriver.Host&logo=nuget)](https://www.nuget.org/packages/WebViewDriver.Host/)
+[![WebViewDriver.Selenium on NuGet](https://img.shields.io/nuget/v/WebViewDriver.Selenium?label=WebViewDriver.Selenium&logo=nuget)](https://www.nuget.org/packages/WebViewDriver.Selenium/)
+[![WebViewDriver.Selenium.AppiumMac on NuGet](https://img.shields.io/nuget/v/WebViewDriver.Selenium.AppiumMac?label=AppiumMac&logo=nuget)](https://www.nuget.org/packages/WebViewDriver.Selenium.AppiumMac/)
+
 The current release is **0.3.0**.
 The packages target .NET 10.
 
@@ -18,7 +22,15 @@ The packages target .NET 10.
 
 WebViewDriver does not replace EdgeDriver on Windows or Appium on Android.
 
-## Basic use
+## Quick start
+
+Install the host package in the app under test and the Selenium package in
+the test project:
+
+```bash
+dotnet add path/to/App.csproj package WebViewDriver.Host
+dotnet add path/to/Tests.csproj package WebViewDriver.Selenium
+```
 
 Register the host while building the app. Keep this code out of production
 builds.
@@ -110,6 +122,10 @@ Those events are synthetic. They cannot activate CSS `:hover`, satisfy
 implementation.
 
 Use the Appium mac2 backend when real input is required:
+
+```bash
+dotnet add path/to/Tests.csproj package WebViewDriver.Selenium.AppiumMac
+```
 
 ```csharp
 using var driver = WebViewDriverClient.Connect(
